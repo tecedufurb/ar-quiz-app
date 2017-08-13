@@ -2,20 +2,20 @@
 using UnityEngine.UI;
 
 /// <summary>
-/// Calcula o FPS da cena atual.
-/// Para que o script funcione basta colocá-lo em algum objeto Text da cena.
+/// Calculates the FPS of the Scene.
 /// </summary>
+/// Needs to be attached to a UI Text component
 public class FPS : MonoBehaviour {
 
-    private float deltaTime = 0.0f;
-    private float fps;
+    private float mDeltaTime = 0.0f;
+    private float mFps;
      
     void Update() {
-        deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
+        mDeltaTime += (Time.deltaTime - mDeltaTime) * 0.1f;
     }
     
     void OnGUI() {
-        fps = 1.0f / deltaTime;
-        gameObject.GetComponent<Text>().text = "" + (int) fps;
+        mFps = 1.0f / mDeltaTime;
+        gameObject.GetComponent<Text>().text = "" + (int) mFps;
     }
 }

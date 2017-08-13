@@ -1,43 +1,43 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Responsible for the timer. If the time ends, the game is over.
+/// </summary>
 public class Timer : MonoBehaviour {
-
-	public Text m_TimerText;
-	public QuestionScreenBehavior m_QuestionScreenBehavior;
-
-	private float m_StartTime;
-	private float m_Time;
-	private string m_Seconds;
-	private string m_Minutes;
-	private int m_SubtractTime;
-	private float m_Speed = 0.017f;
+    
+	private QuestionScreenBehavior mQuestionScreenBehavior;
+	private float mStartTime;
+	private float mTime;
+	private string mSeconds;
+	private string mMinutes;
+	private int mSubtractTime;
+	private float mSpeed = 0.017f;
 
 	void Awake(){
-		m_StartTime = 120f;		//armazena o valor inicial do cronômetro em segundos
-		m_Time = 0f;
-        m_QuestionScreenBehavior = GameObject.Find("Canvas").GetComponent<QuestionScreenBehavior>();
+		mStartTime = 120f;
+		mTime = 0f;
+        mQuestionScreenBehavior = GameObject.Find("Canvas").GetComponent<QuestionScreenBehavior>();
 	}
 
 	void FixedUpdate(){
 
-		m_Time = m_StartTime - m_SubtractTime * m_Speed;
+		mTime = mStartTime - mSubtractTime * mSpeed;
 
-		if (m_Time > 0) {
-			m_Minutes = ((int)m_Time / 60).ToString ("00");
-			m_Seconds = (m_Time % 60).ToString ("00");
-			m_TimerText.text = m_Minutes + ":" + m_Seconds;
+		if (mTime > 0) {
+			mMinutes = ((int)mTime / 60).ToString ("00");
+			mSeconds = (mTime % 60).ToString ("00");
+			GetComponent<Text>().text = mMinutes + ":" + mSeconds;
 		} else {
-            m_QuestionScreenBehavior.EnableMainPanel(false);
-            m_QuestionScreenBehavior.EnableQuestionPanel(false);
-            m_QuestionScreenBehavior.EnableFinalPanel(true);
+            mQuestionScreenBehavior.EnableMainPanel(false);
+            mQuestionScreenBehavior.EnableQuestionPanel(false);
+            mQuestionScreenBehavior.EnableFinalPanel(true);
             gameObject.SetActive(false);
 		}
 
-		m_SubtractTime++;
+		mSubtractTime++;
 
         if (Quiz.m_GameOver)
             gameObject.SetActive(false);
-
     }
 }

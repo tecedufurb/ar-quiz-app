@@ -6,14 +6,12 @@ Confidential and Proprietary - Protected under copyright and other laws.
 
 using UnityEngine;
 
-namespace Vuforia
-{
+namespace Vuforia {
     /// <summary>
-    /// A custom handler that implements the ITrackableEventHandler interface.
+    /// A copy of the DefaultTrackableEventHandler class with some little modifications.
     /// </summary>
     public class MyDefaultTrackableEventHandler : MonoBehaviour,
-                                                ITrackableEventHandler
-    {
+                                                ITrackableEventHandler {
 
         #region PRIVATE_MEMBER_VARIABLES
 
@@ -21,20 +19,18 @@ namespace Vuforia
 
         #endregion // PRIVATE_MEMBER_VARIABLES
 
-        public QuestionScreenBehavior m_QuestionScreenBehavior;
-        public GameObject m_Character;
-        public GameObject m_Arrow;
-        public GameObject m_Timer;
+        [SerializeField] private QuestionScreenBehavior QuestionScreenBehavior;
+        [SerializeField] private GameObject Character;
+        [SerializeField] private GameObject CanvasArrow;
+        [SerializeField] private GameObject Timer;
 
-        public static bool mFirstTime = true;
+        private bool mFirstTime = true;
 
         #region UNTIY_MONOBEHAVIOUR_METHODS
 
-        void Start()
-        {
+        void Start() {
             mTrackableBehaviour = GetComponent<TrackableBehaviour>();
-            if (mTrackableBehaviour)
-            {
+            if (mTrackableBehaviour) {
                 mTrackableBehaviour.RegisterTrackableEventHandler(this);
             }
         }
@@ -51,16 +47,12 @@ namespace Vuforia
         /// </summary>
         public void OnTrackableStateChanged(
                                         TrackableBehaviour.Status previousStatus,
-                                        TrackableBehaviour.Status newStatus)
-        {
+                                        TrackableBehaviour.Status newStatus) {
             if (newStatus == TrackableBehaviour.Status.DETECTED ||
                 newStatus == TrackableBehaviour.Status.TRACKED ||
-                newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
-            {
+                newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED) {
                 OnTrackingFound();
-            }
-            else
-            {
+            } else {
                 OnTrackingLost();
             }
         }
@@ -72,26 +64,23 @@ namespace Vuforia
         #region PRIVATE_METHODS
 
 
-        private void OnTrackingFound()
-        {
+        private void OnTrackingFound() {
             Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
             Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
 
             // Enable rendering:
-            foreach (Renderer component in rendererComponents)
-            {
+            foreach (Renderer component in rendererComponents) {
                 component.enabled = true;
             }
 
             // Enable colliders:
-            foreach (Collider component in colliderComponents)
-            {
+            foreach (Collider component in colliderComponents) {
                 component.enabled = true;
             }
-
+            
             if (mFirstTime) {
-                m_Character.GetComponent<Rigidbody>().isKinematic = false;
-                m_QuestionScreenBehavior.DisableTargetPanel(true);
+                Character.GetComponent<Rigidbody>().isKinematic = false;
+                QuestionScreenBehavior.DisableTargetPanel(true);
                 DifficultyHandler();
                 mFirstTime = false;
             }
@@ -99,36 +88,36 @@ namespace Vuforia
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
         }
 
-        private void OnTrackingLost()
-        {
+        private void OnTrackingLost() {
             Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
             Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
 
             // Disable rendering:
-            foreach (Renderer component in rendererComponents)
-            {
+            foreach (Renderer component in rendererComponents) {
                 component.enabled = false;
             }
-            
+
             // Disable colliders:
-            foreach (Collider component in colliderComponents)
-            {
+            foreach (Collider component in colliderComponents) {
                 if ((component.tag != "Ground") || (component.tag != "Player"))
                     component.enabled = false;
-                
+
             }
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
         }
 
         #endregion // PRIVATE_METHODS
 
+        /// <summary>
+        /// Active the Arrow or Timer object, depending on the difficulty level chosen previously.
+        /// </summary>
         private void DifficultyHandler() {
             switch (QuestionSingleTon.Instance.m_Difficulty) {
                 case Difficulty.EASY:
-                    m_Arrow.SetActive(true);
+                    CanvasArrow.SetActive(true);
                     break;
                 case Difficulty.HARD:
-                    m_Timer.SetActive(true);
+                    Timer.SetActive(true);
                     break;
             }
         }

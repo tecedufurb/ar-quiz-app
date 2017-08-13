@@ -1,42 +1,41 @@
 ﻿using UnityEngine;
 
-//Responsável pelo controle da seta de localização utilizada na scene MainScene_Easy.
-//Está inserida no gameObject canvasArrow (filho do gameObject ThirdPersonCharacter)
+/// <summary>
+/// Responsible for make the arrow points toward the Question object direction.
+/// </summary>
+/// Attached to the CanvasArrow object.
 public class Arrow : MonoBehaviour {
 
-    public GameObject m_Arrow;
-
-    private GameObject m_Ref;
-	private Vector3 v;
+    [SerializeField] private GameObject ArrowPrefab;
+    
+    private GameObject mRef;
+	private Vector3 mDirection;
     
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.tag == "Question")
-            m_Arrow.SetActive(false);
+            ArrowPrefab.SetActive(false);
     }
 
     void OnTriggerExit(Collider other) {
 		if (other.gameObject.tag == "Question")
-			m_Arrow.SetActive (true);
-		
+			ArrowPrefab.SetActive (true);
     }
     
     void Update() {
 
-        m_Ref = GameObject.FindGameObjectWithTag("Question");
+        mRef = GameObject.FindGameObjectWithTag("Question");
 
         if (Quiz.m_FlagArrow) {
-            m_Arrow.SetActive(true);
+            ArrowPrefab.SetActive(true);
             Quiz.m_FlagArrow = false;
         }
 
-        if (m_Ref != null) {
-            v = m_Ref.transform.position;
-            v.y = 0;
+        if (mRef != null) {
+            mDirection = mRef.transform.position;
+            mDirection.y = 0;
         }
-        
 
         //arrow always looks forward so it will show correctly to viewer, and world-up changes the rotation
-        transform.LookAt(transform.position + transform.forward, v - transform.position);
-
+        transform.LookAt(transform.position + transform.forward, mDirection - transform.position);
     }
 }

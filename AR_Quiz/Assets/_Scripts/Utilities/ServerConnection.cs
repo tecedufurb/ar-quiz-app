@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Responsável por realizar as conexões necessárias com o servidor
+/// Responsible for create a connection with the server and make the requests.
 /// </summary>
 public class ServerConnection : MonoBehaviour {
 
@@ -12,10 +12,10 @@ public class ServerConnection : MonoBehaviour {
     private const string URL_SERVER = "http://10.9.30.85:3000";
 
     /// <summary>
-    /// 
+    /// Send the player's informations for the server.
     /// </summary>
-    /// <param name="user">Json do objeto jogador a ser enviado</param>
-    /// <param name="CallBackSaveScore"></param>
+    /// <param name="user">Player object json to be send.</param>
+    /// <param name="CallBackSaveScore">Function that will handle the request's errors and result.</param>
     /// <returns></returns>
     public static IEnumerator SaveScore(string user, Func<string, string, int> CallBackSaveScore) {
 
@@ -34,6 +34,12 @@ public class ServerConnection : MonoBehaviour {
         CallBackSaveScore(www.error, www.text);
     }
 
+    /// <summary>
+    /// Send a code to the server and returns a json of questionnaire.
+    /// </summary>
+    /// <param name="codigo">Code to be send.</param>
+    /// <param name="CallBackRequestQuestion">Function that will handle the request's errors and result.</param>
+    /// <returns></returns>
     public static IEnumerator RequestQuestion(string codigo, Func<string, string, int> CallBackRequestQuestion) {
         Debug.Log(codigo);
         Debug.Log("POSTING");

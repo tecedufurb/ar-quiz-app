@@ -1,24 +1,23 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-//Responsável pela apresentação dos pontos conseguidos no CanvasFinal
-//Usa a variavel m_score da classe Game que conta a pontuação
-//Utilizada no gameObject ProgressBar (filho de CanvasFinal/PanelFinal)
+/// <summary>
+/// Responsible for showing the player's score at the end of the game.
+/// </summary>
+/// Attached to the ScoreBar object.
 public class ScoreBar : MonoBehaviour {
 
-	public Transform m_LoadingBar;
-	public Transform m_TextIndicator;
-	public Quiz m_Quiz;
+	[SerializeField] private Transform LoadingBar;
+	[SerializeField] private Transform TextScoreIndicator;
+	[SerializeField] private Quiz Quiz;
 
 	private float mCurrentScore;
 	private float mCurrentTime;
 	private float mFullScore;
 	private float mSpeed = 50f;
-	private float mCount = 0f;
-
-    private int mScore;
 
 	void Start() {
+        int mScore = 0;
         switch (QuestionSingleTon.Instance.m_Difficulty) {
             case Difficulty.EASY:
                 mScore = 10;
@@ -31,17 +30,15 @@ public class ScoreBar : MonoBehaviour {
                 break;
         }
         mFullScore = QuestionSingleTon.Instance.m_QuestionsAmount * mScore;
+        mCurrentScore = Quiz.m_Score;
     }
 
-	// Update is called once per frame
 	void FixedUpdate () {
-		mCurrentScore = m_Quiz.m_Score;			//variável da classe Game que é incrementada/decrementada a cada acerto/erro
-
 		mCurrentTime += mSpeed * Time.deltaTime;
 
 		if(mCurrentTime <= mCurrentScore){
-			m_TextIndicator.GetComponent<Text>().text = ((int)mCurrentTime).ToString() + "/" + (QuestionSingleTon.Instance.m_QuestionsAmount * mScore).ToString();
-			m_LoadingBar.GetComponent<Image>().fillAmount = mCurrentTime / mFullScore;
+			TextScoreIndicator.GetComponent<Text>().text = ((int)mCurrentTime).ToString() + "/" + mFullScore.ToString();
+			LoadingBar.GetComponent<Image>().fillAmount = mCurrentTime / mFullScore;
 		}
 	}
 }

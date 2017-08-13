@@ -1,21 +1,24 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Increase and decrease the scale of an object.
+/// </summary>
+/// Originally attached to the TitlePanelMainMenu object.
 public class ImageAnimation : MonoBehaviour {
 
-    public float m_MaxSize;
-    public float m_Speed;
+    [SerializeField] private float MaxSize;
+    [SerializeField] private float Speed;
 
     private bool mMaxSize;
 
-	// Update is called once per frame
 	void Update () {
-        if (!mMaxSize && (transform.localScale.x < m_MaxSize))
-            transform.localScale = new Vector3(transform.localScale.x + Time.deltaTime * m_Speed, transform.localScale.y + Time.deltaTime * m_Speed, transform.localScale.z + Time.deltaTime * m_Speed);
+        if (!mMaxSize && (transform.localScale.x < MaxSize))
+            transform.localScale = new Vector3(transform.localScale.x + Time.deltaTime * Speed, transform.localScale.y + Time.deltaTime * Speed, transform.localScale.z);
         else
             mMaxSize = true;
 
         if (mMaxSize && (transform.localScale.x > 1))
-            transform.localScale = new Vector3(transform.localScale.x - Time.deltaTime * m_Speed, transform.localScale.y - Time.deltaTime * m_Speed, transform.localScale.z - Time.deltaTime * m_Speed);
+            transform.localScale = new Vector3(transform.localScale.x - Time.deltaTime * Speed, transform.localScale.y - Time.deltaTime * Speed, transform.localScale.z);
         else
             mMaxSize = false;
     }

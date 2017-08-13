@@ -1,24 +1,37 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Responsible for the audio effects of the quiz.
+/// </summary>
+/// Attached to the _GameManager object.
 public class AudioManager : MonoBehaviour {
 
-    public AudioSource m_AudioSource;
-    public AudioClip m_RightAnswerAudio;
-    public AudioClip m_WrongAnswerAudio;
-    public AudioClip m_WinAudio;
+    [SerializeField] private AudioSource AudioSource;
+    [SerializeField] private AudioClip RightAnswerAudio;
+    [SerializeField] private AudioClip WrongAnswerAudio;
+    [SerializeField] private AudioClip WinGameAudio;
 
+    /// <summary>
+    /// Plays a sound to indicate that the answer was right.
+    /// </summary>
     public void PlayRightAnswerAudio() {
-        m_AudioSource.clip = m_RightAnswerAudio;
-        m_AudioSource.Play();
+        AudioSource.clip = RightAnswerAudio;
+        AudioSource.Play();
     }
 
+    /// <summary>
+    /// Plays a sound to indicate that the answer was wrong.
+    /// </summary>
     public void PlayWrongAnswerAudio() {
-        m_AudioSource.clip = m_WrongAnswerAudio;
-        m_AudioSource.Play();
+        AudioSource.clip = WrongAnswerAudio;
+        AudioSource.Play();
     }
 
+    /// <summary>
+    /// Plays a sound to indicate that the game is over.
+    /// </summary>
     public void PlayWinAudio() {
-        m_AudioSource.clip = m_WinAudio;
-        m_AudioSource.Play();
+        AudioSource.clip = WinGameAudio;
+        AudioSource.Play();
     }
 }
