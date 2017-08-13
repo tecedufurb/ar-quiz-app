@@ -4,6 +4,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Responsible for the timer. If the time ends, the game is over.
 /// </summary>
+/// Needs to be attached to some UI Text component.
 public class Timer : MonoBehaviour {
     
 	private QuestionScreenBehavior mQuestionScreenBehavior;
@@ -14,14 +15,13 @@ public class Timer : MonoBehaviour {
 	private int mSubtractTime;
 	private float mSpeed = 0.017f;
 
-	void Awake(){
+	void Start(){
 		mStartTime = 120f;
 		mTime = 0f;
-        mQuestionScreenBehavior = GameObject.Find("Canvas").GetComponent<QuestionScreenBehavior>();
+        mQuestionScreenBehavior = FindObjectOfType<QuestionScreenBehavior>();
 	}
 
 	void FixedUpdate(){
-
 		mTime = mStartTime - mSubtractTime * mSpeed;
 
 		if (mTime > 0) {
@@ -36,8 +36,5 @@ public class Timer : MonoBehaviour {
 		}
 
 		mSubtractTime++;
-
-        if (Quiz.m_GameOver)
-            gameObject.SetActive(false);
     }
 }

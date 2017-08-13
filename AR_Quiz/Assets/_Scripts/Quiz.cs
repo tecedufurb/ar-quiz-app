@@ -7,10 +7,7 @@ public class Quiz : MonoBehaviour {
     public QuestionScreenBehavior m_QuestionScreenBehavior;
     public GameObject m_QuestionPrefab;
     public GameObject m_ImageTarget;
-    public AudioManager m_AudioManager;
     public static List<string> m_TipSplit = new List<string>();
-    public static bool m_FlagArrow = false;
-    public static bool m_GameOver = false;
     public GameObject m_Canvas;
     public int m_Score;
     //public TurnPage m_TurnPageLeft;
@@ -112,19 +109,15 @@ public class Quiz : MonoBehaviour {
         mRightQuestionsCount++;
 
         IncrementScore();
-        m_AudioManager.PlayRightAnswerAudio();
 
         m_QuestionScreenBehavior.ShowRightAnswerMessege(mQuestionAmount + 1);
         m_QuestionScreenBehavior.ShowScore(m_Score);
 
         Destroy(GameObject.Find("Question(Clone)"));
-        m_FlagArrow = true;
 
         if (mQuestions.Count > 0) {
             InstantiateQuestion();
         } else {
-            m_GameOver = true;
-            m_AudioManager.PlayWinAudio();
             m_QuestionScreenBehavior.EnableMainPanel(false);
             m_QuestionScreenBehavior.EnableFinalPanel(true);
         }
@@ -135,8 +128,7 @@ public class Quiz : MonoBehaviour {
 
         if (m_Score > 0)
             DecrementScore();
-
-        m_AudioManager.PlayWrongAnswerAudio();
+        
         m_QuestionScreenBehavior.ShowWrongAnswerMessege();
         m_QuestionScreenBehavior.ShowScore(m_Score);
     }
@@ -195,8 +187,7 @@ public class Quiz : MonoBehaviour {
             Debug.Log(json);
             StartCoroutine(ServerConnection.SaveScore(json, CallBackSaveScore));
         } else {
-            m_QuestionScreenBehavior.EnableMessegePanel("Nome inválido. Tente novamente!");
-            m_AudioManager.PlayWrongAnswerAudio();
+            m_QuestionScreenBehavior.EnableMessegePanel("Nome inválido. Tente novamente!", false);
         }
     }
 
@@ -208,12 +199,10 @@ public class Quiz : MonoBehaviour {
     /// <returns>Retorna 0</returns>
     public int CallBackSaveScore(string err, string resultStr) {
         if (err == null) {
-            m_QuestionScreenBehavior.EnableMessegePanel("Pontuação enviada com sucesso!");
+            m_QuestionScreenBehavior.EnableMessegePanel("Pontuação enviada com sucesso!", true);
             m_QuestionScreenBehavior.EnableRankingButton();
-            m_AudioManager.PlayRightAnswerAudio();
         } else {
-            m_QuestionScreenBehavior.EnableMessegePanel("Erro ao enviar a pontuação. Tente novamente.");
-            m_AudioManager.PlayWrongAnswerAudio();
+            m_QuestionScreenBehavior.EnableMessegePanel("Erro ao enviar a pontuação. Tente novamente.", false);
         }
         return 0;
     }

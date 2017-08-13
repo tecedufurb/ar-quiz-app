@@ -3,7 +3,7 @@
 /// <summary>
 /// Responsible for make the arrow points toward the Question object direction.
 /// </summary>
-/// Attached to the CanvasArrow object.
+/// Originally attached to the CanvasArrow object.
 public class Arrow : MonoBehaviour {
 
     [SerializeField] private GameObject ArrowPrefab;
@@ -25,9 +25,10 @@ public class Arrow : MonoBehaviour {
 
         mRef = GameObject.FindGameObjectWithTag("Question");
 
-        if (Quiz.m_FlagArrow) {
+        //Active the arrow when the question is destroyed.
+        if (QuestionTriggerController.m_FlagArrow) {
             ArrowPrefab.SetActive(true);
-            Quiz.m_FlagArrow = false;
+            QuestionTriggerController.m_FlagArrow = false;
         }
 
         if (mRef != null) {
@@ -35,7 +36,7 @@ public class Arrow : MonoBehaviour {
             mDirection.y = 0;
         }
 
-        //arrow always looks forward so it will show correctly to viewer, and world-up changes the rotation
+        //Arrow always looks forward so it will show correctly to viewer, and world-up changes the rotation
         transform.LookAt(transform.position + transform.forward, mDirection - transform.position);
     }
 }

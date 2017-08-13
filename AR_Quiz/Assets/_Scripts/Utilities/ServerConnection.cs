@@ -12,7 +12,7 @@ public class ServerConnection : MonoBehaviour {
     private const string URL_SERVER = "http://10.9.30.85:3000";
 
     /// <summary>
-    /// Send the player's informations for the server.
+    /// Send the player's informations to the server.
     /// </summary>
     /// <param name="user">Player object json to be send.</param>
     /// <param name="CallBackSaveScore">Function that will handle the request's errors and result.</param>
@@ -21,7 +21,6 @@ public class ServerConnection : MonoBehaviour {
 
         Dictionary<string, string> headers = new Dictionary<string, string>();
         headers["Content-Type"] = "application/json";
-
         byte[] pData = System.Text.Encoding.ASCII.GetBytes(user.ToCharArray());
 
         WWW www = new WWW(URL_SERVER + "/api/player/save-points", pData, headers);
@@ -41,12 +40,10 @@ public class ServerConnection : MonoBehaviour {
     /// <param name="CallBackRequestQuestion">Function that will handle the request's errors and result.</param>
     /// <returns></returns>
     public static IEnumerator RequestQuestion(string codigo, Func<string, string, int> CallBackRequestQuestion) {
-        Debug.Log(codigo);
-        Debug.Log("POSTING");
-        Debug.Log("CREATING WWW");
+
         WWW www = new WWW(URL_SERVER + "/api/questionnaire/code/" + codigo);
+
         yield return www;
-        Debug.Log("HAVE RESULTS");
 
         Debug.Log(www.text);
         Debug.Log(www.error);

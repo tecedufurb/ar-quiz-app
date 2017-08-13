@@ -5,6 +5,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Responsible for make the ScoreText prefab fade away after have been instantiated.
 /// </summary>
+/// Originally attached to the ScoreText prefab.
 public class ScoreText : MonoBehaviour {
 
 	private float mSpeed;
@@ -48,7 +49,6 @@ public class ScoreText : MonoBehaviour {
 		
 			yield return null;
 		}
-
 		Destroy (gameObject);
 	}
 }

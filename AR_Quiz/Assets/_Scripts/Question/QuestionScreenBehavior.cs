@@ -8,7 +8,6 @@ public class QuestionScreenBehavior : MonoBehaviour {
     public GameObject m_FinalPanel;
     public GameObject m_MessegePanel;
     public GameObject m_PanelScoreText;
-    //public GameObject m_PressButtonPanel;
     public GameObject m_MobileSingleStickControlRig;
     public GameObject m_TargetPanel;
 
@@ -22,13 +21,13 @@ public class QuestionScreenBehavior : MonoBehaviour {
     public Text m_Messege;
     public Text m_TextRightScore;
     public Text m_TextWrongScore;
-    //public Text m_ScoreSentText;
 
     public Button m_SendButton;
     public Button m_RankingButton;
-    //public Button m_ButtonQ;
 
     public InputField m_PlayerNameInputField;
+
+    public AudioManager m_AudioManager;
 
     private float mTimer;
 
@@ -69,19 +68,23 @@ public class QuestionScreenBehavior : MonoBehaviour {
     }
 
     public void EnableFinalPanel(bool active) {
-        m_MobileSingleStickControlRig.SetActive(false);
+        m_MobileSingleStickControlRig.SetActive(!active);
+        m_MainPanel.SetActive(!active);
         m_FinalPanel.SetActive(active);
+        m_AudioManager.PlayWinAudio();
     }
 
     public void ShowRightAnswerMessege(int value) {
         m_TextFinalAnswer.color = new Color(18f / 255f, 218f / 255f, 0);
         m_TextFinalAnswer.text = "Você acertou!\n Faltam " + value + " perguntas.";
+        m_AudioManager.PlayRightAnswerAudio();
         mTimer = 5;
     }
 
     public void ShowWrongAnswerMessege() {
         m_TextFinalAnswer.color = new Color(227f / 255f, 8f / 255f, 8f / 255f);
         m_TextFinalAnswer.text = "Você errou!\n Tente novamente.";
+        m_AudioManager.PlayWrongAnswerAudio();
         mTimer = 5;
     }
 
@@ -98,20 +101,15 @@ public class QuestionScreenBehavior : MonoBehaviour {
         m_TextWrongScore.text = wrongQuestionsCount.ToString();
     }
 
-    /*
-    public void EnableButtonQ(bool value) {
-        m_ButtonQ.interactable = value;
-    }
-    
-    public void EnablePressButtonPanel(bool value) {
-        m_PressButtonPanel.SetActive(value);
-    }
-    */
-
-    public void EnableMessegePanel(string messege) {
+    public void EnableMessegePanel(string messege, bool right) {
         m_FinalPanel.SetActive(false);
         m_Messege.text = messege;
         m_MessegePanel.SetActive(true);
+
+        if (right)
+            m_AudioManager.PlayRightAnswerAudio();
+        else
+            m_AudioManager.PlayWrongAnswerAudio();
     }
 
     public void BackFinalPanel() {

@@ -19,8 +19,7 @@ namespace Vuforia {
 
         #endregion // PRIVATE_MEMBER_VARIABLES
 
-        [SerializeField] private QuestionScreenBehavior QuestionScreenBehavior;
-        [SerializeField] private GameObject Character;
+        [SerializeField] private QuestionScreenBehavior Canvas;
         [SerializeField] private GameObject CanvasArrow;
         [SerializeField] private GameObject Timer;
 
@@ -79,8 +78,7 @@ namespace Vuforia {
             }
             
             if (mFirstTime) {
-                Character.GetComponent<Rigidbody>().isKinematic = false;
-                QuestionScreenBehavior.DisableTargetPanel(true);
+                Canvas.DisableTargetPanel(true);
                 DifficultyHandler();
                 mFirstTime = false;
             }
@@ -101,7 +99,6 @@ namespace Vuforia {
             foreach (Collider component in colliderComponents) {
                 if ((component.tag != "Ground") || (component.tag != "Player"))
                     component.enabled = false;
-
             }
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
         }

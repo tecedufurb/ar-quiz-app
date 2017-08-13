@@ -2,12 +2,12 @@
 using UnityEngine.UI;
 
 /// <summary>
-/// Responsible for showing the player's score at the end of the game.
+/// Responsible for showing the player's score when the game is over.
 /// </summary>
-/// Attached to the ScoreBar object.
+/// Originally attached to the ScoreBar object.
 public class ScoreBar : MonoBehaviour {
 
-	[SerializeField] private Transform LoadingBar;
+	[SerializeField] private Transform ProgressScore;
 	[SerializeField] private Transform TextScoreIndicator;
 	[SerializeField] private Quiz Quiz;
 
@@ -38,7 +38,7 @@ public class ScoreBar : MonoBehaviour {
 
 		if(mCurrentTime <= mCurrentScore){
 			TextScoreIndicator.GetComponent<Text>().text = ((int)mCurrentTime).ToString() + "/" + mFullScore.ToString();
-			LoadingBar.GetComponent<Image>().fillAmount = mCurrentTime / mFullScore;
+			ProgressScore.GetComponent<Image>().fillAmount = mCurrentTime / mFullScore;
 		}
 	}
 }

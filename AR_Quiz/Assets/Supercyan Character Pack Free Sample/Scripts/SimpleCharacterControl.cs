@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using UnitySampleAssets.CrossPlatformInput;
-using Vuforia;
 
 public class SimpleCharacterControl : MonoBehaviour {
 
@@ -84,8 +82,6 @@ public class SimpleCharacterControl : MonoBehaviour {
     }
 
     void Update() {
-        transform.localPosition = new Vector3(transform.localPosition.x, 0, transform.localPosition.z);
-
         m_animator.SetBool("Grounded", m_isGrounded);
 
         switch (m_controlMode) {
@@ -107,13 +103,10 @@ public class SimpleCharacterControl : MonoBehaviour {
 
     private void TankUpdate() {
 
-        //float v = Input.GetAxis("Vertical");
-        //float h = Input.GetAxis("Horizontal");
-        float v = CrossPlatformInputManager.GetAxis("Vertical");
-        float h = CrossPlatformInputManager.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
+        float h = Input.GetAxis("Horizontal");
 
         bool walk = Input.GetKey(KeyCode.LeftShift);
-       // bool walk = CrossPlatformInputManager.GetButton(KeyCode.LeftShift);
 
         if (v < 0) {
             if (walk) { v *= m_backwardsWalkScale; } else { v *= m_backwardRunScale; }
@@ -133,16 +126,12 @@ public class SimpleCharacterControl : MonoBehaviour {
     }
 
     private void DirectUpdate() {
-        //float v = Input.GetAxis("Vertical");
-        //float h = Input.GetAxis("Horizontal");
-
-        float v = CrossPlatformInputManager.GetAxis("Vertical");
-        float h = CrossPlatformInputManager.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
+        float h = Input.GetAxis("Horizontal");
 
         Transform camera = Camera.main.transform;
 
         if (Input.GetKey(KeyCode.LeftShift)) {
-        //if (CrossPlatformInputManager.GetButtonDown(KeyCode.LeftShift.ToString())) {
             v *= m_walkScale;
             h *= m_walkScale;
         }

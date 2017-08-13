@@ -1,5 +1,8 @@
 ﻿using System;
 
+/// <summary>
+/// Contains the questionnaire informations received by the server.
+/// </summary>
 [Serializable]
 public class Questionnaire {
 

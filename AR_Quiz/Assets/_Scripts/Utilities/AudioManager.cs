@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Responsible for the audio effects of the quiz.
+/// Responsible for the game audio effects
 /// </summary>
-/// Attached to the _GameManager object.
+/// Originally attached to the _GameManager object.
 public class AudioManager : MonoBehaviour {
 
     [SerializeField] private AudioSource AudioSource;
@@ -12,7 +12,7 @@ public class AudioManager : MonoBehaviour {
     [SerializeField] private AudioClip WinGameAudio;
 
     /// <summary>
-    /// Plays a sound to indicate that the answer was right.
+    /// Plays a sound to indicate that the answer is right.
     /// </summary>
     public void PlayRightAnswerAudio() {
         AudioSource.clip = RightAnswerAudio;
@@ -20,7 +20,7 @@ public class AudioManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// Plays a sound to indicate that the answer was wrong.
+    /// Plays a sound to indicate that the answer is wrong.
     /// </summary>
     public void PlayWrongAnswerAudio() {
         AudioSource.clip = WrongAnswerAudio;

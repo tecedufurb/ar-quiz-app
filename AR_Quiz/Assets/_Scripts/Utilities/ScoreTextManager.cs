@@ -4,7 +4,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Responsible for instantiate the ScoreText prefabs.
 /// </summary>
-/// Attached to the _ScoreTextManager object.
+/// Originally attached to the _ScoreTextManager object.
 public class ScoreTextManager : MonoBehaviour {
     
 	[SerializeField] private GameObject ScoreText;
@@ -24,7 +24,7 @@ public class ScoreTextManager : MonoBehaviour {
 	}
 
     /// <summary>
-    /// Instantiate the ScoreText prefab and calls it Inicialize function.
+    /// Instantiate the ScoreText prefab and calls it Inicialize() function.
     /// </summary>
     /// <param name="position">Position where the text will be instantiated.</param>
     /// <param name="text">Text content.</param>

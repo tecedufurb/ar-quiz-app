@@ -1,5 +1,8 @@
 ﻿using System;
 
+/// <summary>
+/// Contains the question informations received by the server.
+/// </summary>
 [Serializable]
 public class Question {
 
@@ -10,6 +13,5 @@ public class Question {
     public string m_AnswerC;
     public string m_AnswerD;
     public string m_RightAlternative;
-    //public int m_Tip;
     
 }
