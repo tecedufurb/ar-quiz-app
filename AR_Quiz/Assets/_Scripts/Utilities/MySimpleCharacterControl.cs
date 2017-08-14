@@ -40,7 +40,7 @@ public class MySimpleCharacterControl : MonoBehaviour {
     private float m_jumpTimeStamp = 0;
     private float m_minJumpInterval = 0.25f;
 
-    private bool m_isGrounded;
+    private bool m_isGrounded = true;
     private List<Collider> m_collisions = new List<Collider>();
 
     private void OnCollisionEnter(Collision collision) {

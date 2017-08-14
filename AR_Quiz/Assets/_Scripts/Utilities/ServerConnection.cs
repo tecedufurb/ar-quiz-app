@@ -4,18 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Responsible for create a connection with the server and make the requests.
+/// Responsible for the server requests.
 /// </summary>
 public class ServerConnection : MonoBehaviour {
-
-    //private const string URL_SERVER = "http://201.54.204.8:3000";
-    private const string URL_SERVER = "http://10.9.30.85:3000";
+    
+    private const string URL_SERVER = "http://10.13.18.227:3000";
 
     /// <summary>
     /// Send the player's informations to the server.
     /// </summary>
     /// <param name="user">Player object json to be send.</param>
-    /// <param name="CallBackSaveScore">Function that will handle the request's errors and result.</param>
+    /// <param name="CallBackSaveScore">Function that will handle the request errors and result.</param>
     /// <returns></returns>
     public static IEnumerator SaveScore(string user, Func<string, string, int> CallBackSaveScore) {
 
@@ -34,11 +33,10 @@ public class ServerConnection : MonoBehaviour {
     }
 
     /// <summary>
-    /// Send a code to the server and returns a json of questionnaire.
+    /// Send a code to the server and returns a ServerResult object as a json.
     /// </summary>
     /// <param name="codigo">Code to be send.</param>
-    /// <param name="CallBackRequestQuestion">Function that will handle the request's errors and result.</param>
-    /// <returns></returns>
+    /// <param name="CallBackRequestQuestion">Function that will handle the request errors and result
     public static IEnumerator RequestQuestion(string codigo, Func<string, string, int> CallBackRequestQuestion) {
 
         WWW www = new WWW(URL_SERVER + "/api/questionnaire/code/" + codigo);

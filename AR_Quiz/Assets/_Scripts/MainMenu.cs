@@ -1,38 +1,53 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Responsible for handle the UI components of the Menu scene.
+/// </summary>
 public class MainMenu : MonoBehaviour {
 
-    public AudioManager m_AudioManager;
+    [SerializeField] private AudioManager m_AudioManager;
 
-    public GameObject m_MainMenuPanel;
-    public GameObject m_InstructionsPanel;
-    public GameObject m_DiffucultyPanel;
-    public GameObject m_ConfigurationsPanel;
-    public GameObject m_QuestionnairePanel;
-    public GameObject m_MessegePanel;
-    public InputField m_QuestionnaireCode;
+    [SerializeField] private GameObject m_MainMenuPanel;
+    [SerializeField] private GameObject m_InstructionsPanel;
+    [SerializeField] private GameObject m_DiffucultyPanel;
+    [SerializeField] private GameObject m_ConfigurationsPanel;
+    [SerializeField] private GameObject m_QuestionnairePanel;
+    [SerializeField] private GameObject m_MessegePanel;
+    [SerializeField] private InputField m_QuestionnaireCode;
 
-    public Text m_QuestionnaireCodeText;
-    public Text m_Messege;
-    public Text m_QuestionnairePanelTitleText;
-    public Text m_DifficultyPanelTitleText;
+    [SerializeField] private Text m_QuestionnaireCodeText;
+    [SerializeField] private Text m_Messege;
+    [SerializeField] private Text m_QuestionnairePanelTitleText;
+    [SerializeField] private Text m_DifficultyPanelTitleText;
 
-    public GameObject m_SendIcon;
-    public Sprite m_Confirm;
-    public Sprite m_Error;
+    [SerializeField] private GameObject m_SendIcon;
+    [SerializeField] private Sprite m_Confirm;
+    [SerializeField] private Sprite m_Error;
 
+    /// <summary>
+    /// Enables or disables the Instructions Panel.
+    /// </summary>
+    /// <param name="active">True to enable or False to disable the panel.</param>
     public void EnableInstructionsPanel(bool active) {
         m_ConfigurationsPanel.SetActive(!active);
         m_InstructionsPanel.SetActive(active);
     }
 
+    /// <summary>
+    /// Enables or disables the Difficulty Panel.
+    /// </summary>
+    /// <param name="active">True to enable or False to disable the panel.</param>
     public void EnableDifficultyPanel(bool active) {
         m_MainMenuPanel.SetActive(!active);
-        m_DifficultyPanelTitleText.text = QuestionSingleTon.Instance.m_JsonQuestions.m_Questionnaire.result.title;
         m_DiffucultyPanel.SetActive(active);
+        m_DifficultyPanelTitleText.text = QuestionSingleTon.Instance.m_JsonQuestions.m_Questionnaire.result.title;
     }
 
+    /// <summary>
+    /// Enables or disables the Questionnaire Panel.
+    /// </summary>
+    /// <param name="active">True to enable or False to disable the panel.</param>
     public void EnableQuestionnairePanel(bool active) {
         m_ConfigurationsPanel.SetActive(!active);
         m_QuestionnairePanelTitleText.text = QuestionSingleTon.Instance.m_JsonQuestions.m_Questionnaire.result.title;
@@ -40,15 +55,47 @@ public class MainMenu : MonoBehaviour {
     }
 
     /// <summary>
-    /// Ativa ou desativa o ConfigurationsPanel.
-    /// Chamado no método OnClick do objeto ConfigurationsButton na interface da Unity.
+    /// Enables or disables the Configurations Panel.
     /// </summary>
-    /// <param name="active">True (checkbox marcado) para ativar o painel ou False (checkbox desmarcado) para desativar</param>
+    /// <param name="active">True to enable or False to disable the panel.</param>
     public void EnableConfigurationsPanel(bool active) {
         m_MainMenuPanel.SetActive(!active);
         m_ConfigurationsPanel.SetActive(active);
     }
 
+
+    /// <summary>
+    /// Enables or disables the Messege Panel but doesn't set the messege.
+    /// </summary>
+    /// <param name="active">True to enable or False to disable the panel.</param>
+    public void EnableMessegePanel(bool active) {
+        m_QuestionnairePanel.SetActive(!active);
+        m_MessegePanel.SetActive(active);
+    }
+
+    /// <summary>
+    /// Enables or disables the Messege Panel and set the messege.
+    /// </summary>
+    /// <param name="messege">Messege that will be show on the screen.</param>
+    /// <param name="active">True to enable or False to disable the panel.</param>
+    private void EnableMessegePanel(string messege, bool active) {
+        m_QuestionnairePanel.SetActive(!active);
+        m_Messege.text = messege;
+        m_MessegePanel.SetActive(active);
+    }
+
+    /// <summary>
+    /// Enables or disables the Questionnaire Panel icon of success or error.
+    /// </summary>
+    public void EnableSendIcon() {
+        m_SendIcon.gameObject.SetActive(false);
+    }
+
+
+    /// <summary>
+    /// Sets the difficulty level based on the clicked button.
+    /// </summary>
+    /// <param name="bt">The button that will be clicked.</param>
     public void ChooseDifficultyButton(Button bt) {
         switch (bt.name) {
             case "EasyButton":
@@ -63,29 +110,17 @@ public class MainMenu : MonoBehaviour {
         }
     }
 
-    public void Quit() {
-        Application.Quit();
+    /// <summary>
+    /// Open an external url.
+    /// </summary>
+    /// <param name="url">The url that will be open.</param>
+    public void OpenLink(string url) {
+        Application.OpenURL(url);
     }
-
-    public void OpenLink(string link) {
-        Application.OpenURL(link);
-    }
-    
-    public void EnableMessegePanel(bool active) {
-        m_QuestionnairePanel.SetActive(!active);
-        m_MessegePanel.SetActive(active);
-    }
-    
-    private void EnableMessegePanel(string messege, bool active) {
-        m_QuestionnairePanel.SetActive(!active);
-        m_Messege.text = messege;
-        m_MessegePanel.SetActive(active);
-    }
-
-    public void EnableSendIcon() {
-        m_SendIcon.gameObject.SetActive(false);
-    }
-
+   
+    /// <summary>
+    /// Calls the RequestQuestion() coroutine of ServerConnecton class to send the questionnaire code.
+    /// </summary>
     public void SendCodeQuestionnaire() {
         if (m_QuestionnaireCodeText.text == "") {
             EnableMessegePanel("Informe algum código!", true);
@@ -96,13 +131,12 @@ public class MainMenu : MonoBehaviour {
     }
 
     /// <summary>
-    /// Salva o resultado do request no PlayerPrefs e 
-    /// preenche a lista m_Questions da classe QuestionSingleton com as perguntas do novo questionário.
-    /// É passada como parâmetro da função SendScore.requestQuestion().
+    /// Saves the request result in the PlayerPrefs and populate the m_Questions list 
+    /// of QuestionSingleton class with the new questions.
     /// </summary>
-    /// <param name="err">Erro da consulta ao servidor.</param>
-    /// <param name="resultStr">Resultado da consulta ao servidor.</param>
-    /// <returns>Retorna 0</returns>
+    /// <param name="err">Server request error.</param>
+    /// <param name="resultStr">Server request result.</param>
+    /// <returns>0</returns>
     private int CallBackRequestQuestion(string err, string resultStr) {
         if (err == null) {
             PlayerPrefs.SetString("Questionnaire", "{\"m_Questionnaire\":" + resultStr + "}"); //precisa fazer isso para ficar no formato certo para gerar o objeto
@@ -121,5 +155,12 @@ public class MainMenu : MonoBehaviour {
             m_AudioManager.PlayWrongAnswerAudio();
         }
         return 0;
+    }
+
+    /// <summary>
+    /// Close the game.
+    /// </summary>
+    public void Quit() {
+        Application.Quit();
     }
 }
