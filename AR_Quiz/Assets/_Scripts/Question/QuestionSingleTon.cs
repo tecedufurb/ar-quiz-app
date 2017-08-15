@@ -2,52 +2,109 @@
 using UnityEngine;
 
 /// <summary>
-/// The different difficulty levels.
+/// The difficulty levels.
 /// </summary>
 public enum Difficulty {
     EASY, NORMAL, HARD
 }
 
 /// <summary>
-/// 
+/// Responsible for create a list of questions from the ResultServer object. 
+/// This class persists between scenes.
 /// </summary>
+/// Originally attached to the _Singonton object
 public class QuestionSingleTon : MonoBehaviour {
     
-    public List<Question> m_Questions;
-    public ServerResult m_Questionnaire;
-    public int m_QuestionsAmount;
-    public Difficulty m_Difficulty = Difficulty.NORMAL;
-    public CreateObjectFromJson m_JsonQuestions;
-
+    private List<Question> mQuestions;
+    private int mQuestionsAmount;
+    private Difficulty mDifficulty = Difficulty.NORMAL;
+    private CreateObjectFromJson mJsonQuestions;
     private static QuestionSingleTon mInstance;
 
+    #region PUBLIC_PROPERTIES
+    /// <summary>
+    /// Property of mQuestions variable.
+    /// </summary>
+    public List<Question> Questions {
+        get {
+            return mQuestions;
+        }
+
+        set {
+            mQuestions = value;
+        }
+    }
+
+    /// <summary>
+    /// Property of mQuestionsAmount variable.
+    /// </summary>
+    public int QuestionsAmount {
+        get {
+            return mQuestionsAmount;
+        }
+
+        set {
+            mQuestionsAmount = value;
+        }
+    }
+
+    /// <summary>
+    /// Property of mDifficulty variable.
+    /// </summary>
+    public Difficulty Difficulty {
+        get {
+            return mDifficulty;
+        }
+
+        set {
+            mDifficulty = value;
+        }
+    }
+
+    /// <summary>
+    /// Property of mJsonQuestions variable.
+    /// </summary>
+    public CreateObjectFromJson JsonQuestions {
+        get {
+            return mJsonQuestions;
+        }
+
+        set {
+            mJsonQuestions = value;
+        }
+    }
+
+    /// <summary>
+    /// Property of mInstance variable.
+    /// </summary>
     public static QuestionSingleTon Instance {
         get {
             if (mInstance == null)
                 mInstance = FindObjectOfType<QuestionSingleTon>();
-            
+
             return mInstance;
         }
     }
+    #endregion
 
     void Awake() {
-        //CreateObjectFromJson.LoadPlayerPrefs();
-        PopulateQuestionsFromQuestionnaireJson();
+        CreateObjectFromJson.SetPlayerPrefs();
+        PopulateQuestionsFromServerResult();
+
         DontDestroyOnLoad(gameObject);
     }
-    
+
     /// <summary>
-    /// Populates the m_Questions list with the questions of the ServerResult object 
-    /// created by the CreateQuestionnaireFromJson() method.
+    /// Populates the Questions list with the questions of the ServerResult object.
     /// </summary>
-    public void PopulateQuestionsFromQuestionnaireJson() {
-        m_Questions = new List<Question>();
-        m_JsonQuestions = CreateObjectFromJson.CreateQuestionnaireFromJson();
+    public void PopulateQuestionsFromServerResult() {
+        Questions = new List<Question>();
+        JsonQuestions = CreateObjectFromJson.CreateServerResultFromJson();
         
-        foreach (Question p in m_JsonQuestions.m_Questionnaire.result.questions) {
+        foreach (Question p in JsonQuestions.m_ServerResult.result.questions) {
             p.m_RightAlternative = p.m_AnswerA;
-            m_Questions.Add(p);
+            Questions.Add(p);
         }
-        m_QuestionsAmount = m_Questions.Count;
+        QuestionsAmount = Questions.Count;
     }
 }

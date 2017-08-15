@@ -4,6 +4,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Responsible for handle the UI components of the Menu scene.
 /// </summary>
+/// Originally attached to the _GameManager object.
 public class MenuScreenHandle : MonoBehaviour {
 
     #region PRIVATE_UI_VARIABLES
@@ -25,7 +26,6 @@ public class MenuScreenHandle : MonoBehaviour {
     #endregion
 
 
-
     /// <summary>
     /// Enable or disable the instructions panel.
     /// </summary>
@@ -42,7 +42,7 @@ public class MenuScreenHandle : MonoBehaviour {
     public void EnableDifficultyPanel(bool enable) {
         m_MainMenuPanel.SetActive(!enable);
         m_DiffucultyPanel.SetActive(enable);
-        m_DifficultyPanelTitleText.text = QuestionSingleTon.Instance.m_JsonQuestions.m_Questionnaire.result.title;
+        m_DifficultyPanelTitleText.text = QuestionSingleTon.Instance.JsonQuestions.m_ServerResult.result.title;
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public class MenuScreenHandle : MonoBehaviour {
     /// <param name="enable">True to enable or False to disable the panel.</param>
     public void EnableQuestionnairePanel(bool enable) {
         m_ConfigurationsPanel.SetActive(!enable);
-        m_QuestionnairePanelTitleText.text = QuestionSingleTon.Instance.m_JsonQuestions.m_Questionnaire.result.title;
+        m_QuestionnairePanelTitleText.text = QuestionSingleTon.Instance.JsonQuestions.m_ServerResult.result.title;
         m_QuestionnairePanel.SetActive(enable);
     }
 
@@ -100,13 +100,13 @@ public class MenuScreenHandle : MonoBehaviour {
     public void ChooseDifficultyButton(Button bt) {
         switch (bt.name) {
             case "EasyButton":
-                QuestionSingleTon.Instance.m_Difficulty = Difficulty.EASY;
+                QuestionSingleTon.Instance.Difficulty = Difficulty.EASY;
                 break;
             case "NormalButton":
-                QuestionSingleTon.Instance.m_Difficulty = Difficulty.NORMAL;
+                QuestionSingleTon.Instance.Difficulty = Difficulty.NORMAL;
                 break;
             case "HardButton":
-                QuestionSingleTon.Instance.m_Difficulty = Difficulty.HARD;
+                QuestionSingleTon.Instance.Difficulty = Difficulty.HARD;
                 break;
         }
     }
@@ -140,14 +140,14 @@ public class MenuScreenHandle : MonoBehaviour {
     /// <returns>0</returns>
     private int CallBackRequestQuestion(string err, string resultStr) {
         if (err == null) {
-            PlayerPrefs.SetString("Questionnaire", "{\"m_Questionnaire\":" + resultStr + "}"); //precisa fazer isso para ficar no formato certo para gerar o objeto
-            QuestionSingleTon.Instance.PopulateQuestionsFromQuestionnaireJson();
+            PlayerPrefs.SetString("ServerResult", "{\"m_ServerResult\":" + resultStr + "}"); //precisa fazer isso para ficar no formato certo para gerar o objeto
+            QuestionSingleTon.Instance.PopulateQuestionsFromServerResult();
 
             m_SendIcon.GetComponent<Image>().sprite = m_Confirm;
             m_SendIcon.gameObject.SetActive(true);
             EnableMessagePanel("Questionário substituído com sucesso!", true);
             m_AudioManager.PlayRightAnswerAudio();
-            m_QuestionnairePanelTitleText.text = QuestionSingleTon.Instance.m_JsonQuestions.m_Questionnaire.result.title;
+            m_QuestionnairePanelTitleText.text = QuestionSingleTon.Instance.JsonQuestions.m_ServerResult.result.title;
         }else {
             Debug.Log(err);
             m_SendIcon.GetComponent<Image>().sprite = m_Error;

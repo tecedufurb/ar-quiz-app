@@ -17,20 +17,20 @@ public class ScoreBar : MonoBehaviour {
 	private float mSpeed = 50f;
 
 	void Start() {
-        int mScore = 0;
-        switch (QuestionSingleTon.Instance.m_Difficulty) {
+        int score = 0;
+        switch (QuestionSingleTon.Instance.Difficulty) {
             case Difficulty.EASY:
-                mScore = 10;
+                score = 10;
                 break;
             case Difficulty.NORMAL:
-                mScore = 30;
+                score = 30;
                 break;
             case Difficulty.HARD:
-                mScore = 50;
+                score = 50;
                 break;
         }
-        mFullScore = QuestionSingleTon.Instance.m_QuestionsAmount * mScore;
-        mCurrentScore = Quiz.m_Score;
+        mFullScore = QuestionSingleTon.Instance.QuestionsAmount * score;
+        mCurrentScore = Quiz.Score;
     }
 
 	void FixedUpdate () {

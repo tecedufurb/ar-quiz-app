@@ -2,48 +2,63 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Responsible for handle the quiz behaviors.
+/// </summary>
 public class Quiz : MonoBehaviour {
 
-    public GameScreenHandle m_QuestionScreenBehavior;
-    public GameObject m_QuestionPrefab;
-    public GameObject m_ImageTarget;
-    public static List<string> m_TipSplit = new List<string>();
-    public GameObject m_Canvas;
-    public int m_Score;
-    //public TurnPage m_TurnPageLeft;
-    //public TurnPage m_TurnPageRight;
+    [SerializeField] private GameScreenHandle GameScreenBehavior;
+    [SerializeField] private GameObject QuestionPrefab;
+    [SerializeField] private GameObject ImageTarget;
 
     private List<Question> mQuestions;
     private int mQuestionAmount;
     private int mRightQuestionsCount = 0;
     private int mWrongQuestionsCount = 0;
+    private int mScore;
 
-    void Awake() {
-        QuestionSingleTon.Instance.PopulateQuestionsFromQuestionnaireJson();
-        mQuestions = QuestionSingleTon.Instance.m_Questions;
-        mQuestionAmount = mQuestions.Count - 1;
+    /// <summary>
+    /// mScore variable property.
+    /// </summary>
+    public int Score {
+        get {
+            return mScore;
+        }
+        set {
+            mScore = value;
+        }
     }
-
+    
     void Start() {
+        mQuestions = QuestionSingleTon.Instance.Questions;
+        mQuestionAmount = mQuestions.Count - 1;
+
         InstantiateQuestion();
         ShowQuestion();
     }
 
+    /// <summary>
+    /// Verifies the alternative button that was clicked.
+    /// </summary>
+    /// <param name="alternative"></param>
     public void CheckAlternative(string alternative) {
         switch (alternative) {
-            case "A": CheckAnswer(m_QuestionScreenBehavior.m_AlternativeAText.text);
+            case "A": CheckAnswer(GameScreenBehavior.m_AlternativeAText.text);
                 break;
-            case "B": CheckAnswer(m_QuestionScreenBehavior.m_AlternativeBText.text);
+            case "B": CheckAnswer(GameScreenBehavior.m_AlternativeBText.text);
                 break;
-            case "C": CheckAnswer(m_QuestionScreenBehavior.m_AlternativeCText.text);
+            case "C": CheckAnswer(GameScreenBehavior.m_AlternativeCText.text);
                 break;
-            case "D": CheckAnswer(m_QuestionScreenBehavior.m_AlternativeDText.text);
+            case "D": CheckAnswer(GameScreenBehavior.m_AlternativeDText.text);
                 break;
         }
     }
 
+    /// <summary>
+    /// Check if the answer is right or not.
+    /// </summary>
+    /// <param name="answer"></param>
     private void CheckAnswer(string answer) {
-
         if (answer == mQuestions[mQuestionAmount].m_RightAlternative)
             RightAnswer();
         else
@@ -52,11 +67,14 @@ public class Quiz : MonoBehaviour {
         if(mQuestionAmount >= 0)
             ShowQuestion();
 
-        m_QuestionScreenBehavior.ShowQuestionsScore(mRightQuestionsCount, mWrongQuestionsCount);
+        GameScreenBehavior.ShowQuestionsScore(mRightQuestionsCount, mWrongQuestionsCount);
     }
 
+    /// <summary>
+    /// Randomize a question and its alternatives.
+    /// </summary>
     private void RandomizeQuestion() {
-        //randomiza as perguntas da lista m_Questions
+        //Randomize the questions of mQuestions list
         for (int i = 0; i < mQuestions.Count; i++) {
             Question temp = mQuestions[i];
             int randomIndex = Random.Range(i, mQuestions.Count);
@@ -64,7 +82,7 @@ public class Quiz : MonoBehaviour {
             mQuestions[randomIndex] = temp;
         }
 
-        //Randomiza as alternativas da pergunta que está na ultima posição de m_Questions
+        //Randomize the alternatives of the last question of mQuestions list.
         string[] alternatives = new string[4];
         alternatives[0] = mQuestions[mQuestionAmount].m_AnswerA;
         alternatives[1] = mQuestions[mQuestionAmount].m_AnswerB;
@@ -84,25 +102,25 @@ public class Quiz : MonoBehaviour {
         mQuestions[mQuestionAmount].m_AnswerD = alternatives[3];
     }
 
+    /// <summary>
+    /// Show the last question of mQuestions list and its alternatives.
+    /// </summary>
     public void ShowQuestion() {
         RandomizeQuestion();
-
-        //Exibe a pergunta que está na última posição de mQuestions
-        m_QuestionScreenBehavior.m_QuestionText.text = mQuestions[mQuestionAmount].m_Question;
-
-        //Exibe as alternativas da pergunta que está na última posição de mQuestions
-        m_QuestionScreenBehavior.m_AlternativeAText.text = mQuestions[mQuestionAmount].m_AnswerA;
-        m_QuestionScreenBehavior.m_AlternativeBText.text = mQuestions[mQuestionAmount].m_AnswerB;
-        m_QuestionScreenBehavior.m_AlternativeCText.text = mQuestions[mQuestionAmount].m_AnswerC;
-        m_QuestionScreenBehavior.m_AlternativeDText.text = mQuestions[mQuestionAmount].m_AnswerD;
-
-        //Seta a página da apostila para a página onde está a dica da pergunta
-        //m_TurnPageLeft.m_Count = mQuestions[mQuestionAmount].m_Tip;
-        //m_TurnPageRight.m_Count = mQuestions[mQuestionAmount].m_Tip + 1;
+        
+        GameScreenBehavior.m_QuestionText.text = mQuestions[mQuestionAmount].m_Question;
+        GameScreenBehavior.m_AlternativeAText.text = mQuestions[mQuestionAmount].m_AnswerA;
+        GameScreenBehavior.m_AlternativeBText.text = mQuestions[mQuestionAmount].m_AnswerB;
+        GameScreenBehavior.m_AlternativeCText.text = mQuestions[mQuestionAmount].m_AnswerC;
+        GameScreenBehavior.m_AlternativeDText.text = mQuestions[mQuestionAmount].m_AnswerD;
     }
     
+    /// <summary>
+    /// Remove the question from mQuestions list, instantiate a new Question object
+    /// and increment the player score.
+    /// </summary>
     private void RightAnswer() {
-        m_QuestionScreenBehavior.EnableQuestionPanel(false);
+        GameScreenBehavior.EnableQuestionPanel(false);
 
         mQuestions.Remove(mQuestions[mQuestionAmount]);
         mQuestionAmount--;
@@ -110,32 +128,38 @@ public class Quiz : MonoBehaviour {
 
         IncrementScore();
 
-        m_QuestionScreenBehavior.ShowRightAnswerMessage(mQuestionAmount + 1);
-        m_QuestionScreenBehavior.ShowScore(m_Score);
+        GameScreenBehavior.ShowRightAnswerMessage(mQuestionAmount + 1);
+        GameScreenBehavior.ShowScore(Score);
 
         Destroy(GameObject.Find("Question(Clone)"));
 
         if (mQuestions.Count > 0) {
             InstantiateQuestion();
         } else {
-            m_QuestionScreenBehavior.EnableMainPanel(false);
-            m_QuestionScreenBehavior.EnableFinalPanel(true);
+            GameScreenBehavior.EnableMainPanel(false);
+            GameScreenBehavior.EnableFinalPanel(true);
         }
     }
 
+    /// <summary>
+    /// Decrement the player score.
+    /// </summary>
     private void WrongAnswer() {
         mWrongQuestionsCount++;
 
-        if (m_Score > 0)
+        if (Score > 0)
             DecrementScore();
         
-        m_QuestionScreenBehavior.ShowWrongAnswerMessage();
-        m_QuestionScreenBehavior.ShowScore(m_Score);
+        GameScreenBehavior.ShowWrongAnswerMessage();
+        GameScreenBehavior.ShowScore(Score);
     }
 
+    /// <summary>
+    /// Increment the player score based on the difficulty level.
+    /// </summary>
     private void IncrementScore() {
         int score = 0;
-        switch (QuestionSingleTon.Instance.m_Difficulty) {
+        switch (QuestionSingleTon.Instance.Difficulty) {
             case Difficulty.EASY: score = 10;
                 break;
             case Difficulty.NORMAL: score = 30;
@@ -143,13 +167,16 @@ public class Quiz : MonoBehaviour {
             case Difficulty.HARD: score = 50;
                 break;
         }
-        m_Score += score;
-        m_QuestionScreenBehavior.ShowAddScoreAnimation(score);
+        Score += score;
+        GameScreenBehavior.ShowAddScoreAnimation(score);
     }
 
+    /// <summary>
+    /// Decrement the player score based on the difficulty level.
+    /// </summary>
     private void DecrementScore() {
         int score = 0;
-        switch (QuestionSingleTon.Instance.m_Difficulty) {
+        switch (QuestionSingleTon.Instance.Difficulty) {
             case Difficulty.EASY: score = 2;
                 break;
             case Difficulty.NORMAL: score = 5;
@@ -157,10 +184,13 @@ public class Quiz : MonoBehaviour {
             case Difficulty.HARD: score = 10;
                 break;
         }
-        m_Score -= score;
-        m_QuestionScreenBehavior.ShowSubScoreAnimation(score);
+        Score -= score;
+        GameScreenBehavior.ShowSubScoreAnimation(score);
     }
-
+    
+    /// <summary>
+    /// Instantiate a new Question object in a random position.
+    /// </summary>
     private void InstantiateQuestion() {
         float wall1 = GameObject.Find("Wall1").transform.position.x;
         float wall2 = GameObject.Find("Wall2").transform.position.x;
@@ -170,40 +200,8 @@ public class Quiz : MonoBehaviour {
         float randomPositionX = Random.Range(wall1 - 0.5f, wall2 - 0.5f);
         float randomPositionZ = Random.Range(wall3 - 0.5f, wall4 - 0.5f);
 
-        GameObject temp = Instantiate(m_QuestionPrefab, new Vector3(randomPositionX, 20f, randomPositionZ), Quaternion.identity);
-        temp.transform.parent = m_ImageTarget.transform;
+        GameObject temp = Instantiate(QuestionPrefab, new Vector3(randomPositionX, 20f, randomPositionZ), Quaternion.identity);
+        temp.transform.parent = ImageTarget.transform;
         temp.transform.localScale = new Vector3(0.8f, 0.01f, 0.8f);
-    }
-
-    public InputField m_PlayerName;
-    public void SendScoreButtom() {
-        Player player = new Player();
-        if (m_PlayerName.text != "") {
-            player.points = m_Score;
-            player.name = m_PlayerName.text;
-            player.questCode = QuestionSingleTon.Instance.m_JsonQuestions.m_Questionnaire.result.code;
-            string json = JsonUtility.ToJson(player);
-            Debug.Log(m_PlayerName.text);
-            Debug.Log(json);
-            StartCoroutine(ServerConnection.SaveScore(json, CallBackSaveScore));
-        } else {
-            m_QuestionScreenBehavior.EnableMessagePanel("Nome inválido. Tente novamente!", false);
-        }
-    }
-
-    /// <summary>
-    /// Envia a pontuação e o nome do jogador para o servidor.
-    /// </summary>
-    /// <param name="err">Erro retornado da consulta ao servidor</param>
-    /// <param name="resultStr">Resultado retornado da consulta ao servidor</param>
-    /// <returns>Retorna 0</returns>
-    public int CallBackSaveScore(string err, string resultStr) {
-        if (err == null) {
-            m_QuestionScreenBehavior.EnableMessagePanel("Pontuação enviada com sucesso!", true);
-            m_QuestionScreenBehavior.EnableRankingButton();
-        } else {
-            m_QuestionScreenBehavior.EnableMessagePanel("Erro ao enviar a pontuação. Tente novamente.", false);
-        }
-        return 0;
     }
 }

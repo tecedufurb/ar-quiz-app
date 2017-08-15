@@ -4,6 +4,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Responsible for handle the UI components of the Game scene.
 /// </summary>
+/// Originally attached to the Canvas object.
 public class GameScreenHandle : MonoBehaviour {
 
     public Text m_QuestionText;
@@ -37,7 +38,7 @@ public class GameScreenHandle : MonoBehaviour {
         if (mTimer > 0) {
             mTimer -= Time.deltaTime;
             if (mTimer <= 0)
-                m_AnswerMessageText.text = "";
+                EraseAnswerMessage();
         }
     }
 
@@ -190,4 +191,40 @@ public class GameScreenHandle : MonoBehaviour {
     public void ShowSubScoreAnimation(int points) {
         ScoreTextManager.Instance.CreateText(m_PanelScoreText.transform.position, "-" + points.ToString() + " ", new Color(227f / 255f, 8f / 255f, 8f / 255f));
     }
+
+    /// <summary>
+    /// Send the player score to the server.
+    /// </summary>
+    /// <param name="playerName">Name of the player that will be sent.</param>
+    public void SendScoreButtom(InputField playerName) {
+        if (playerName.text != "") {
+            Quiz quiz = FindObjectOfType<Quiz>();
+            Player player = new Player();
+            player.points = quiz.Score;
+            player.name = playerName.text;
+            player.questCode = QuestionSingleTon.Instance.JsonQuestions.m_ServerResult.result.code;
+            string json = JsonUtility.ToJson(player);
+            Debug.Log(json);
+            StartCoroutine(ServerConnection.SaveScore(json, CallBackSaveScore));
+        } else {
+            EnableMessagePanel("Nome inválido. Tente novamente!", false);
+        }
+    }
+
+    /// <summary>
+    /// Check if the request returned an error or not.
+    /// </summary>
+    /// <param name="err">Server request error</param>
+    /// <param name="resultStr">Server request result</param>
+    /// <returns>0</returns>
+    public int CallBackSaveScore(string err, string resultStr) {
+        if (err == null) {
+            EnableMessagePanel("Pontuação enviada com sucesso!", true);
+            EnableRankingButton();
+        } else {
+            EnableMessagePanel("Erro ao enviar a pontuação. Tente novamente.", false);
+        }
+        return 0;
+    }
+
 }

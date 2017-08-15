@@ -109,7 +109,7 @@ namespace Vuforia {
         /// Active the Arrow or Timer object, depending on the difficulty level chosen previously.
         /// </summary>
         private void DifficultyHandler() {
-            switch (QuestionSingleTon.Instance.m_Difficulty) {
+            switch (QuestionSingleTon.Instance.Difficulty) {
                 case Difficulty.EASY:
                     CanvasArrow.SetActive(true);
                     break;
