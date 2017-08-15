@@ -19,7 +19,7 @@ namespace Vuforia {
 
         #endregion // PRIVATE_MEMBER_VARIABLES
 
-        [SerializeField] private QuestionScreenBehavior Canvas;
+        [SerializeField] private GameScreenHandle GameScreenBehavior;
         [SerializeField] private GameObject CanvasArrow;
         [SerializeField] private GameObject Timer;
 
@@ -78,7 +78,7 @@ namespace Vuforia {
             }
             
             if (mFirstTime) {
-                Canvas.DisableTargetPanel(true);
+                GameScreenBehavior.DisableTargetPanel();
                 DifficultyHandler();
                 mFirstTime = false;
             }

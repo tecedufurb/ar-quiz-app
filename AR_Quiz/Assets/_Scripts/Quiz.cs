@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Quiz : MonoBehaviour {
 
-    public QuestionScreenBehavior m_QuestionScreenBehavior;
+    public GameScreenHandle m_QuestionScreenBehavior;
     public GameObject m_QuestionPrefab;
     public GameObject m_ImageTarget;
     public static List<string> m_TipSplit = new List<string>();
@@ -110,7 +110,7 @@ public class Quiz : MonoBehaviour {
 
         IncrementScore();
 
-        m_QuestionScreenBehavior.ShowRightAnswerMessege(mQuestionAmount + 1);
+        m_QuestionScreenBehavior.ShowRightAnswerMessage(mQuestionAmount + 1);
         m_QuestionScreenBehavior.ShowScore(m_Score);
 
         Destroy(GameObject.Find("Question(Clone)"));
@@ -129,7 +129,7 @@ public class Quiz : MonoBehaviour {
         if (m_Score > 0)
             DecrementScore();
         
-        m_QuestionScreenBehavior.ShowWrongAnswerMessege();
+        m_QuestionScreenBehavior.ShowWrongAnswerMessage();
         m_QuestionScreenBehavior.ShowScore(m_Score);
     }
 
@@ -187,7 +187,7 @@ public class Quiz : MonoBehaviour {
             Debug.Log(json);
             StartCoroutine(ServerConnection.SaveScore(json, CallBackSaveScore));
         } else {
-            m_QuestionScreenBehavior.EnableMessegePanel("Nome inválido. Tente novamente!", false);
+            m_QuestionScreenBehavior.EnableMessagePanel("Nome inválido. Tente novamente!", false);
         }
     }
 
@@ -199,10 +199,10 @@ public class Quiz : MonoBehaviour {
     /// <returns>Retorna 0</returns>
     public int CallBackSaveScore(string err, string resultStr) {
         if (err == null) {
-            m_QuestionScreenBehavior.EnableMessegePanel("Pontuação enviada com sucesso!", true);
+            m_QuestionScreenBehavior.EnableMessagePanel("Pontuação enviada com sucesso!", true);
             m_QuestionScreenBehavior.EnableRankingButton();
         } else {
-            m_QuestionScreenBehavior.EnableMessegePanel("Erro ao enviar a pontuação. Tente novamente.", false);
+            m_QuestionScreenBehavior.EnableMessagePanel("Erro ao enviar a pontuação. Tente novamente.", false);
         }
         return 0;
     }

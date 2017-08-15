@@ -8,16 +8,16 @@ public class QuestionTriggerController : MonoBehaviour {
     public static bool m_FlagArrow = false;
 
     private Quiz mQuiz;
-    private QuestionScreenBehavior mQuestionScreenBehavior;
+    private GameScreenHandle mQuestionScreenBehavior;
 
     void Start() {
         mQuiz = FindObjectOfType<Quiz>();
-        mQuestionScreenBehavior = FindObjectOfType<QuestionScreenBehavior>();
+        mQuestionScreenBehavior = FindObjectOfType<GameScreenHandle>();
     }
 
     void OnTriggerEnter(Collider other) {
         if (other.tag == "Player") {
-            mQuestionScreenBehavior.EraseAnswerMessege();
+            mQuestionScreenBehavior.EraseAnswerMessage();
             mQuestionScreenBehavior.EnableQuestionPanel(true);
         }
     }

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 /// Needs to be attached to some UI Text component.
 public class Timer : MonoBehaviour {
     
-	private QuestionScreenBehavior mQuestionScreenBehavior;
+	private GameScreenHandle mQuestionScreenBehavior;
 	private float mStartTime;
 	private float mTime;
 	private string mSeconds;
@@ -18,7 +18,7 @@ public class Timer : MonoBehaviour {
 	void Start(){
 		mStartTime = 120f;
 		mTime = 0f;
-        mQuestionScreenBehavior = FindObjectOfType<QuestionScreenBehavior>();
+        mQuestionScreenBehavior = FindObjectOfType<GameScreenHandle>();
 	}
 
 	void FixedUpdate(){
