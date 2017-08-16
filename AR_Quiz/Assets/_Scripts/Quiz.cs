@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 /// <summary>
 /// Responsible for handle the quiz behaviors.
 /// </summary>
 public class Quiz : MonoBehaviour {
 
-    [SerializeField] private GameScreenHandle GameScreenBehavior;
+    [SerializeField] private GameScreenHandle GameScreenHandle;
     [SerializeField] private GameObject QuestionPrefab;
     [SerializeField] private GameObject ImageTarget;
 
@@ -43,13 +42,13 @@ public class Quiz : MonoBehaviour {
     /// <param name="alternative"></param>
     public void CheckAlternative(string alternative) {
         switch (alternative) {
-            case "A": CheckAnswer(GameScreenBehavior.m_AlternativeAText.text);
+            case "A": CheckAnswer(GameScreenHandle.m_AlternativeAText.text);
                 break;
-            case "B": CheckAnswer(GameScreenBehavior.m_AlternativeBText.text);
+            case "B": CheckAnswer(GameScreenHandle.m_AlternativeBText.text);
                 break;
-            case "C": CheckAnswer(GameScreenBehavior.m_AlternativeCText.text);
+            case "C": CheckAnswer(GameScreenHandle.m_AlternativeCText.text);
                 break;
-            case "D": CheckAnswer(GameScreenBehavior.m_AlternativeDText.text);
+            case "D": CheckAnswer(GameScreenHandle.m_AlternativeDText.text);
                 break;
         }
     }
@@ -67,7 +66,7 @@ public class Quiz : MonoBehaviour {
         if(mQuestionAmount >= 0)
             ShowQuestion();
 
-        GameScreenBehavior.ShowQuestionsScore(mRightQuestionsCount, mWrongQuestionsCount);
+        GameScreenHandle.ShowQuestionsScore(mRightQuestionsCount, mWrongQuestionsCount);
     }
 
     /// <summary>
@@ -108,11 +107,11 @@ public class Quiz : MonoBehaviour {
     public void ShowQuestion() {
         RandomizeQuestion();
         
-        GameScreenBehavior.m_QuestionText.text = mQuestions[mQuestionAmount].m_Question;
-        GameScreenBehavior.m_AlternativeAText.text = mQuestions[mQuestionAmount].m_AnswerA;
-        GameScreenBehavior.m_AlternativeBText.text = mQuestions[mQuestionAmount].m_AnswerB;
-        GameScreenBehavior.m_AlternativeCText.text = mQuestions[mQuestionAmount].m_AnswerC;
-        GameScreenBehavior.m_AlternativeDText.text = mQuestions[mQuestionAmount].m_AnswerD;
+        GameScreenHandle.m_QuestionText.text = mQuestions[mQuestionAmount].m_Question;
+        GameScreenHandle.m_AlternativeAText.text = mQuestions[mQuestionAmount].m_AnswerA;
+        GameScreenHandle.m_AlternativeBText.text = mQuestions[mQuestionAmount].m_AnswerB;
+        GameScreenHandle.m_AlternativeCText.text = mQuestions[mQuestionAmount].m_AnswerC;
+        GameScreenHandle.m_AlternativeDText.text = mQuestions[mQuestionAmount].m_AnswerD;
     }
     
     /// <summary>
@@ -120,7 +119,7 @@ public class Quiz : MonoBehaviour {
     /// and increment the player score.
     /// </summary>
     private void RightAnswer() {
-        GameScreenBehavior.EnableQuestionPanel(false);
+        GameScreenHandle.EnableQuestionPanel(false);
 
         mQuestions.Remove(mQuestions[mQuestionAmount]);
         mQuestionAmount--;
@@ -128,16 +127,16 @@ public class Quiz : MonoBehaviour {
 
         IncrementScore();
 
-        GameScreenBehavior.ShowRightAnswerMessage(mQuestionAmount + 1);
-        GameScreenBehavior.ShowScore(Score);
+        GameScreenHandle.ShowRightAnswerMessage(mQuestionAmount + 1);
+        GameScreenHandle.ShowScore(Score);
 
         Destroy(GameObject.Find("Question(Clone)"));
 
         if (mQuestions.Count > 0) {
             InstantiateQuestion();
         } else {
-            GameScreenBehavior.EnableMainPanel(false);
-            GameScreenBehavior.EnableFinalPanel(true);
+            GameScreenHandle.EnableMainPanel(false);
+            GameScreenHandle.EnableFinalPanel(true);
         }
     }
 
@@ -150,8 +149,8 @@ public class Quiz : MonoBehaviour {
         if (Score > 0)
             DecrementScore();
         
-        GameScreenBehavior.ShowWrongAnswerMessage();
-        GameScreenBehavior.ShowScore(Score);
+        GameScreenHandle.ShowWrongAnswerMessage();
+        GameScreenHandle.ShowScore(Score);
     }
 
     /// <summary>
@@ -168,7 +167,7 @@ public class Quiz : MonoBehaviour {
                 break;
         }
         Score += score;
-        GameScreenBehavior.ShowAddScoreAnimation(score);
+        GameScreenHandle.ShowAddScoreAnimation(score);
     }
 
     /// <summary>
@@ -185,9 +184,9 @@ public class Quiz : MonoBehaviour {
                 break;
         }
         Score -= score;
-        GameScreenBehavior.ShowSubScoreAnimation(score);
+        GameScreenHandle.ShowSubScoreAnimation(score);
     }
-    
+
     /// <summary>
     /// Instantiate a new Question object in a random position.
     /// </summary>
