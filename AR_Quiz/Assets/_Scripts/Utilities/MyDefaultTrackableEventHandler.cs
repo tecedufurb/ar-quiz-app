@@ -22,6 +22,7 @@ namespace Vuforia {
         [SerializeField] private GameScreenHandle GameScreenBehavior;
         [SerializeField] private GameObject CanvasArrow;
         [SerializeField] private GameObject Timer;
+        [SerializeField] private GameObject Character;
 
         private bool mFirstTime = true;
 
@@ -80,6 +81,11 @@ namespace Vuforia {
             if (mFirstTime) {
                 GameScreenBehavior.DisableTargetPanel();
                 DifficultyHandler();
+                Character.GetComponent<Rigidbody>().isKinematic = false;
+
+                //Quiz quiz = FindObjectOfType<Quiz>();
+                //quiz.InstantiateQuestion();
+
                 mFirstTime = false;
             }
 

@@ -30,7 +30,6 @@ public class GameScreenHandle : MonoBehaviour {
     [SerializeField] private Button m_RankingButton;
     [SerializeField] private InputField m_PlayerNameInputField;
     #endregion 
-    
     [SerializeField] private AudioManager m_AudioManager;
     private float mTimer;
 

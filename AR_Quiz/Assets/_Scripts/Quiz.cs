@@ -8,7 +8,6 @@ public class Quiz : MonoBehaviour {
 
     [SerializeField] private GameScreenHandle GameScreenHandle;
     [SerializeField] private GameObject QuestionPrefab;
-    [SerializeField] private GameObject ImageTarget;
 
     private List<Question> mQuestions;
     private int mQuestionAmount;
@@ -29,6 +28,7 @@ public class Quiz : MonoBehaviour {
     }
     
     void Start() {
+        QuestionSingleTon.Instance.PopulateQuestionsFromServerResult();
         mQuestions = QuestionSingleTon.Instance.Questions;
         mQuestionAmount = mQuestions.Count - 1;
 
@@ -125,7 +125,7 @@ public class Quiz : MonoBehaviour {
         mQuestionAmount--;
         mRightQuestionsCount++;
 
-        IncrementScore();
+        IncreaseScore();
 
         GameScreenHandle.ShowRightAnswerMessage(mQuestionAmount + 1);
         GameScreenHandle.ShowScore(Score);
@@ -147,16 +147,16 @@ public class Quiz : MonoBehaviour {
         mWrongQuestionsCount++;
 
         if (Score > 0)
-            DecrementScore();
+            DecreaseScore();
         
         GameScreenHandle.ShowWrongAnswerMessage();
         GameScreenHandle.ShowScore(Score);
     }
 
     /// <summary>
-    /// Increment the player score based on the difficulty level.
+    /// Increase the player score based on the difficulty level.
     /// </summary>
-    private void IncrementScore() {
+    private void IncreaseScore() {
         int score = 0;
         switch (QuestionSingleTon.Instance.Difficulty) {
             case Difficulty.EASY: score = 10;
@@ -171,9 +171,9 @@ public class Quiz : MonoBehaviour {
     }
 
     /// <summary>
-    /// Decrement the player score based on the difficulty level.
+    /// Decrease the player score based on the difficulty level.
     /// </summary>
-    private void DecrementScore() {
+    private void DecreaseScore() {
         int score = 0;
         switch (QuestionSingleTon.Instance.Difficulty) {
             case Difficulty.EASY: score = 2;
@@ -199,8 +199,10 @@ public class Quiz : MonoBehaviour {
         float randomPositionX = Random.Range(wall1 - 0.5f, wall2 - 0.5f);
         float randomPositionZ = Random.Range(wall3 - 0.5f, wall4 - 0.5f);
 
-        GameObject temp = Instantiate(QuestionPrefab, new Vector3(randomPositionX, 20f, randomPositionZ), Quaternion.identity);
-        temp.transform.parent = ImageTarget.transform;
+        GameObject imageTarget = GameObject.Find("ImageTarget");
+
+        GameObject temp = Instantiate(QuestionPrefab, imageTarget.transform, false);
+        temp.transform.position = new Vector3(randomPositionX, 0, randomPositionZ);
         temp.transform.localScale = new Vector3(0.8f, 0.01f, 0.8f);
     }
 }

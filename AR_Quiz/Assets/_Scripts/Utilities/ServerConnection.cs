@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public class ServerConnection : MonoBehaviour {
     
-    private const string URL_SERVER = "http://201.54.204.113:3000";
+    private const string URL_SERVER = "http://201.54.204.10:3000";
 
     /// <summary>
     /// Send the player's informations to the server.
