@@ -14,9 +14,8 @@ namespace Vuforia
     public class DefaultTrackableEventHandler : MonoBehaviour,
                                                 ITrackableEventHandler
     {
-
         #region PRIVATE_MEMBER_VARIABLES
-
+ 
         private TrackableBehaviour mTrackableBehaviour;
     
         #endregion // PRIVATE_MEMBER_VARIABLES
