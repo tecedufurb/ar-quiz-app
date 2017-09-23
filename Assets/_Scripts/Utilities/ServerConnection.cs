@@ -37,12 +37,13 @@ public class ServerConnection : MonoBehaviour {
     /// </summary>
     /// <param name="codigo">Code to be send.</param>
     /// <param name="CallBackRequestQuestion">Function that will handle the request errors and result
-    public static IEnumerator RequestQuestion(string codigo, Func<string, string, int> CallBackRequestQuestion) {
+    public static IEnumerator RequestQuestion(string codigo, Func<string, string, int> CallBackRequestQuestion, GameObject loadingImage) {
 
         WWW www = new WWW(URL_SERVER + "/api/questionnaire/code/" + codigo);
 
         yield return www;
 
+        loadingImage.SetActive(false);
         Debug.Log(www.text);
         Debug.Log(www.error);
         CallBackRequestQuestion(www.error, www.text);

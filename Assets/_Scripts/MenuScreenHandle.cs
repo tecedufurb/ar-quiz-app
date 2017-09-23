@@ -23,6 +23,7 @@ public class MenuScreenHandle : MonoBehaviour {
     [SerializeField] private GameObject m_SendIcon;
     [SerializeField] private Sprite m_Confirm;
     [SerializeField] private Sprite m_Error;
+    [SerializeField] private GameObject m_LoadingImage;
     #endregion
 
 
@@ -127,7 +128,9 @@ public class MenuScreenHandle : MonoBehaviour {
             EnableMessagePanel("Informe algum código!", true);
             m_AudioManager.PlayWrongAnswerAudio();
         } else {
-            StartCoroutine(ServerConnection.RequestQuestion(m_QuestionnaireCodeText.text, CallBackRequestQuestion));
+            m_LoadingImage.SetActive(true);
+            StartCoroutine(ResizeObject.ChangeRotation(m_LoadingImage));
+            StartCoroutine(ServerConnection.RequestQuestion(m_QuestionnaireCodeText.text, CallBackRequestQuestion, m_LoadingImage));
         }
     }
 
@@ -139,6 +142,7 @@ public class MenuScreenHandle : MonoBehaviour {
     /// <param name="resultStr">Server request result.</param>
     /// <returns>0</returns>
     private int CallBackRequestQuestion(string err, string resultStr) {
+        m_LoadingImage.SetActive(false);
         if (err == null) {
             PlayerPrefs.SetString("ServerResult", "{\"m_ServerResult\":" + resultStr + "}"); //precisa fazer isso para ficar no formato certo para gerar o objeto
             QuestionSingleTon.Instance.PopulateQuestionsFromServerResult();

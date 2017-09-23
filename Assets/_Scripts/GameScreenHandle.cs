@@ -29,6 +29,7 @@ public class GameScreenHandle : MonoBehaviour {
     [SerializeField] private Button m_SendScoreButton;
     [SerializeField] private Button m_RankingButton;
     [SerializeField] private InputField m_PlayerNameInputField;
+    [SerializeField] private GameObject m_LoadingImage;
     #endregion 
     [SerializeField] private AudioManager m_AudioManager;
     private float mTimer;
@@ -204,6 +205,8 @@ public class GameScreenHandle : MonoBehaviour {
             player.questCode = QuestionSingleTon.Instance.JsonQuestions.m_ServerResult.result.code;
             string json = JsonUtility.ToJson(player);
             Debug.Log(json);
+            m_LoadingImage.SetActive(true);
+            StartCoroutine(ResizeObject.ChangeRotation(m_LoadingImage));
             StartCoroutine(ServerConnection.SaveScore(json, CallBackSaveScore));
         } else {
             EnableMessagePanel("Nome inválido. Tente novamente!", false);
@@ -217,6 +220,7 @@ public class GameScreenHandle : MonoBehaviour {
     /// <param name="resultStr">Server request result</param>
     /// <returns>0</returns>
     public int CallBackSaveScore(string err, string resultStr) {
+        m_LoadingImage.SetActive(false);
         if (err == null) {
             EnableMessagePanel("Pontuação enviada com sucesso!", true);
             EnableRankingButton();

@@ -46,8 +46,7 @@ public class BookController : MonoBehaviour, ISubject {
     }
 
     public void notify() {
-        foreach (IObserver observer in mObservers) {
+        foreach (IObserver observer in mObservers)
             observer.update(mUpdate);
-        }
     }
 }

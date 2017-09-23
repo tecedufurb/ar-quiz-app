@@ -83,9 +83,6 @@ namespace Vuforia {
                 DifficultyHandler();
                 Character.GetComponent<Rigidbody>().isKinematic = false;
 
-                //Quiz quiz = FindObjectOfType<Quiz>();
-                //quiz.InstantiateQuestion();
-
                 mFirstTime = false;
             }
 

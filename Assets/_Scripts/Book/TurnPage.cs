@@ -11,11 +11,13 @@ public class TurnPage : MonoBehaviour, ITrackableEventHandler, IObserver {
     public BookController m_BookController;
     public List<Button> m_Links = new List<Button>();
     public int m_Count;
+    [SerializeField] private GameObject m_TargetPanel;
     #region PRIVATE_MEMBER_VARIABLES
 
     private TrackableBehaviour mTrackableBehaviour;
     private bool mShow = false;
     private bool mFirstFound;
+    private bool mFirstTime = true;
     #endregion // PRIVATE_MEMBER_VARIABLES
 
     #region UNTIY_MONOBEHAVIOUR_METHODS
@@ -49,17 +51,15 @@ public class TurnPage : MonoBehaviour, ITrackableEventHandler, IObserver {
     {
         if (newStatus == TrackableBehaviour.Status.DETECTED ||
             newStatus == TrackableBehaviour.Status.TRACKED ||
-            newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
-        {
+            newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED) {
             mShow = true;
             OnTrackingFound();
-            if (mFirstFound) 
+            if (mFirstFound)
                 m_BookController.FoundPage();
-            
+
             mFirstFound = true;
         }
-        else
-        {
+        else {
             mShow = false;
             OnTrackingLost();
             m_BookController.LostPage(m_PagePosition);
@@ -76,6 +76,12 @@ public class TurnPage : MonoBehaviour, ITrackableEventHandler, IObserver {
         m_Page.GetComponent<Renderer>().material = m_BookPages[m_Count];
         m_Page.GetComponent<Renderer>().enabled = true;
         ShowLink();
+
+        if (mFirstTime) {
+            m_TargetPanel.SetActive(false);
+            mFirstTime = false;
+        }
+            
         Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
     }
 
@@ -85,16 +91,13 @@ public class TurnPage : MonoBehaviour, ITrackableEventHandler, IObserver {
     }
 
     public void ShowLink() {
-
-        foreach (Button bt in m_Links) {
+        foreach (Button bt in m_Links)
             bt.gameObject.SetActive(false);
-        }
 
-        foreach (Button bt in m_Links) {
+        foreach (Button bt in m_Links)
             if (bt.name == m_BookPages[m_Count].name)
-                bt.gameObject.SetActive(true);            
-        }
-        
+                bt.gameObject.SetActive(true);    
+  
     }
 
     public void update(UpdateData update) {
