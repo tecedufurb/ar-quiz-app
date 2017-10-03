@@ -28,10 +28,27 @@ public class ResizeObject : MonoBehaviour {
             mMaxSize = false;
     }
 
-    public static IEnumerator ChangeRotation(GameObject obj) {
+    public static IEnumerator ChangeRotation(GameObject obj, float speed) {
         while (obj.activeSelf) {
-            obj.transform.Rotate(new Vector3(0, 0, obj.transform.rotation.z - Time.deltaTime*200));
+            obj.transform.Rotate(new Vector3(0, 0, obj.transform.rotation.z - Time.deltaTime * speed));
 
+            yield return null;
+        }
+    }
+
+    public static IEnumerator ChangeRotation(GameObject obj, float speed, char direction) {
+        while (obj.activeSelf) {
+            switch (direction) {
+                case 'x':
+                    obj.transform.Rotate(new Vector3(obj.transform.rotation.x - speed, 0, 0));
+                    break;
+                case 'y':
+                    obj.transform.Rotate(new Vector3(0, obj.transform.rotation.y - speed, 0));
+                    break;
+                case 'z':
+                    obj.transform.Rotate(new Vector3(0, 0, obj.transform.rotation.z - speed));
+                    break;
+            }
             yield return null;
         }
     }

@@ -129,7 +129,7 @@ public class MenuScreenHandle : MonoBehaviour {
             m_AudioManager.PlayWrongAnswerAudio();
         } else {
             m_LoadingImage.SetActive(true);
-            StartCoroutine(ResizeObject.ChangeRotation(m_LoadingImage));
+            StartCoroutine(ResizeObject.ChangeRotation(m_LoadingImage, 200));
             StartCoroutine(ServerConnection.RequestQuestion(m_QuestionnaireCodeText.text, CallBackRequestQuestion, m_LoadingImage));
         }
     }

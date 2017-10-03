@@ -206,7 +206,7 @@ public class GameScreenHandle : MonoBehaviour {
             string json = JsonUtility.ToJson(player);
             Debug.Log(json);
             m_LoadingImage.SetActive(true);
-            StartCoroutine(ResizeObject.ChangeRotation(m_LoadingImage));
+            StartCoroutine(ResizeObject.ChangeRotation(m_LoadingImage, 200));
             StartCoroutine(ServerConnection.SaveScore(json, CallBackSaveScore));
         } else {
             EnableMessagePanel("Nome inválido. Tente novamente!", false);
