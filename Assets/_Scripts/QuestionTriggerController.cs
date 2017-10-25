@@ -14,7 +14,7 @@ public class QuestionTriggerController : MonoBehaviour {
         mQuiz = FindObjectOfType<Quiz>();
         mQuestionScreenBehavior = FindObjectOfType<GameScreenHandle>();
 
-        StartCoroutine(ResizeObject.ChangeRotation(transform.Find("question_mark").gameObject, 3, 'y'));
+        //StartCoroutine(ResizeObject.ChangeRotation(transform.Find("question_mark").gameObject, 3, 'y'));
     }
 
     void OnTriggerEnter(Collider other) {
