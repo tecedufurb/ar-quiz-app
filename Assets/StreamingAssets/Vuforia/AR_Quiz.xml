@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
   <Tracking>
-    <ImageTarget name="tec_edu_target" size="512.000000 512.000000" />
+    <ImageTarget name="tec_edu_target" size="512.000000 419.000000" />
     <ImageTarget name="stones_DirInf_scaled" size="512.000000 401.000000" />
     <ImageTarget name="right_page" size="512.000000 791.000000" />
     <ImageTarget name="left_page" size="512.000000 791.000000" />

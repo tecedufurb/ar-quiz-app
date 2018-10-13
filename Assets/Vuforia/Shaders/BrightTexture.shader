@@ -1,3 +1,8 @@
+//==============================================================================
+//Copyright (c) 2013-2014 Qualcomm Connected Experiences, Inc.
+//All Rights Reserved.
+//==============================================================================
+
 Shader "Custom/BrightTexture" {
     Properties {
         _MainTex ("Base (RGB)", 2D) = "white" {}
@@ -25,7 +30,7 @@ Shader "Custom/BrightTexture" {
         v2f vert (appdata_base v)
         {
             v2f o;
-            o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
+            o.pos = UnityObjectToClipPos (v.vertex);
             o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
             return o;
         }
